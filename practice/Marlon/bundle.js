@@ -1,3 +1,4 @@
+/*! This file is created by Marlon!! */
 /******/ (function(modules) { // webpackBootstrap
 /******/ 	// The module cache
 /******/ 	var installedModules = {};
@@ -48,9 +49,9 @@
 	 * Created by Administrator on 2016/12/10.
 	 */
 	// entry.js
-	__webpack_require__(1); // 载入 style.css
-	//require("./style.css");
-	document.write('It works.');
+	//require("!style!css!./style.css"); // 载入 style.css
+	__webpack_require__(1);
+	document.write('It works.Morlon');
 	document.write(__webpack_require__(5));  // 添加模块
 
 

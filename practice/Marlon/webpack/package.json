@@ -1,0 +1,20 @@
+{
+  "name": "webpack",
+  "version": "1.0.0",
+  "description": "A Simple demo",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack-dev-server --host 127.0.0.1 --port 8081 --hot --inline"
+  },
+  "keywords": [
+    "webpack"
+  ],
+  "author": "Marlon",
+  "license": "ISC",
+  "devDependencies": {
+    "html-webpack-plugin": "^2.24.1",
+    "webpack": "^1.14.0",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-dev-server": "^1.16.2"
+  }
+}
