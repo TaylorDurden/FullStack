@@ -27,6 +27,28 @@ module.exports = {
         historyApiFallback: true,
         hot: true,
         inline: true,
-        progress: true
+        progress: true,
+        port: 8081
+    },
+    module: {
+        loaders: [
+            {
+                test: /\.scss$/,
+                loaders: ['style', 'css', 'sass'],
+                include: APP_PATH
+            },
+            {
+                test: /\.(png|jpg)$/,
+                loader: 'url?limit=40000' //当图片大小小于这个限制的时候，会自动启动base64编码图片
+            },
+            {
+                test: /\.jsx?$/,
+                loader: 'babel',
+                include: APP_PATH,
+                query: {
+                    presets: ['es2015']
+                }
+            }
+        ]
     }
 };
