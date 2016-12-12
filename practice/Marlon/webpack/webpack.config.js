@@ -26,5 +26,17 @@ module.exports = {
         hot: true,
         inline: true,
         progress: true
+    },
+    // 配置loader
+    module: {
+        loaders: [
+            {
+                // 规则 css scss
+                test: /\.scss$/,
+                // loaders的处理顺序是从右到左的，这里就是先运行css-loader然后是style-loader.
+                loaders: ['style', 'css', 'sass'],
+                include: APP_PATH
+            }
+        ]
     }
 };

@@ -7,3 +7,5 @@ var app = document.createElement('div');
 app.innerHTML = "<h1>Hello1 Worlwd!</h1>";
 app.appendChild(sub());
 document.body.appendChild(app);
+//require('./main.css');
+require('./main.scss');
