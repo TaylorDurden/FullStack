@@ -44,18 +44,28 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+	__webpack_require__(1);
+	(function webpackMissingModule() { throw new Error("Cannot find module \".bundle\""); }());
+
+
+/***/ },
+/* 1 */
+/***/ function(module, exports, __webpack_require__) {
+
 	/**
 	 * Created by Administrator on 2016/12/11.
 	 * touch .gitignore   命令生成.gitignore 文件  不要让git提交一些node依赖的模块
 	 */
-	var sub = __webpack_require__(1);
+	//require('./main.scss');
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./main.css\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var sub = __webpack_require__(2);
 	var app = document.createElement('div');
 	app.innerHTML = "<h1>Hello1 Worlwd!</h1>";
 	app.appendChild(sub());
 	document.body.appendChild(app);
 
 /***/ },
-/* 1 */
+/* 2 */
 /***/ function(module, exports) {
 
 	/**
@@ -64,7 +74,7 @@
 	// 我们这里使用cmmonJS 的风格
 	function generateText() {
 	    var element = document.createElement('h2');
-	    element.innerHTML = "Hello1!!! h2 world!";
+	    element.innerHTML = "Hellol。 h2 world!";
 	    return element;
 	}
 

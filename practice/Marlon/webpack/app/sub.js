@@ -4,7 +4,7 @@
 // 我们这里使用cmmonJS 的风格
 function generateText() {
     var element = document.createElement('h2');
-    element.innerHTML = "Hello1!!! h2 world!";
+    element.innerHTML = "Hellol。 h2 world!";
     return element;
 }
 
