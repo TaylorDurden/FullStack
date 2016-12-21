@@ -1,0 +1,31 @@
+//
+   Created by taylor on 20/12/16.
+
+extends ../layout
+block content
+   .container
+      .row
+         form.form-horizontal(method="post", action="/admin/movie/new")
+            .form-group
+               label.col-sm-2.control-label(for="inputTitle") 电影名字
+               .col-sm-10
+                  input#inpuTitle.form-control(type="text", name="movie[title]", value="#{movie.title}")
+            .form-group
+               label.col-sm-2.control-label(for="inputDirector") 电影导演
+               .col-sm-10
+                  input#inpuTitle.form-control(type="text", name="movie[doctor]", value="#{movie.director}")
+            .form-group
+               label.col-sm-2.control-label(for="inputCountry") 国家
+               .col-sm-10
+                  input#inpuTitle.form-control(type="text", name="movie[country]", value="#{movie.country}")
+            .form-group
+               label.col-sm-2.control-label(for="inputLanguage") 语种
+               .col-sm-10
+                  input#inpuTitle.form-control(type="text", name="movie[language]", value="#{movie.language}")
+            .form-group
+               label.col-sm-2.control-label(for="inputPoster") 海报地址
+               .col-sm-10
+                  input#inpuTitle.form-control(type="text", name="movie[poster]", value="#{movie.poster}")
+            .form-group
+               label.col-sm-offset-2.col-sm-10
+               button.btn.btn-default(type='submit') 录入

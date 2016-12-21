@@ -12,5 +12,8 @@
     "css-loader": "^0.21.0",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.2"
+  },
+  "dependencies": {
+    "serve-static": "^1.11.1"
   }
 }
