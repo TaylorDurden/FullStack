@@ -13,8 +13,6 @@ mongoose.connect('mongodb://localhost/imooc')
 
 app.set('views', './views/pages');
 app.set('view engine', 'jade');
-var serveStatic = require('serve-static')
-app.use(serveStatic('bower_components'))
 var bodyParser = require('body-parser')
 app.use(bodyParser.urlencoded({
     extended: true
