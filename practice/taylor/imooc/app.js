@@ -7,6 +7,7 @@ var Movie = require('./models/movie');
 var _ = require('underscore');
 var port = process.env.PORT || 3000;
 var app = express();
+var path = require('path');
 
 mongoose.connect('mongodb://localhost/imooc')
 
@@ -14,8 +15,10 @@ app.set('views', './views/pages');
 app.set('view engine', 'jade');
 var serveStatic = require('serve-static')
 app.use(serveStatic('bower_components'))
-var bodyParser = require('body-parser')
-app.use(bodyParser.urlencoded())
+// var bodyParser = require('body-parser')
+app.use(require('body-parser').urlencoded({extended: true}));
+app.use(express.static(path.join(__dirname, 'public')));
+//app.use(bodyParser.urlencoded())
 app.locals.moment = require('moment');
 app.listen(port);
 
