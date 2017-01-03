@@ -14,6 +14,16 @@ var UserSchema = new mongoose.Schema({
         unique: true,
         type: String
     },
+    // 0: normal user
+    // 1: verified user 通过邮箱验证的用户
+    // 2: classic user 信息完备的用户
+
+    // >10: admin
+    // >50: super admin
+    role: {
+        type: Number,
+        default: 0
+    },
     meta: {
         createAt: {
             type: Date,
