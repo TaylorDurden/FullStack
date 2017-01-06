@@ -12,7 +12,11 @@ var ObjectId = Schema.Types.ObjectId; //无业务含义，经过复杂生成
 var CommentSchema = new Schema({
     movie: {type: ObjectId, ref: 'Movie'},
     from: {type: ObjectId, ref: 'User'},
-    to: {type: ObjectId, ref: 'User'},
+    reply: [{
+        from: {type: ObjectId, ref: 'User'},
+        to: {type: ObjectId, ref: 'User'},
+        content: String
+    }],
     content: String,
     meta: {
         createAt: {
