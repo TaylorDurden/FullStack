@@ -57,7 +57,7 @@ exports.signup = function(req, res) {
             console.log(err);
         }
 
-        if(user) {
+        if (user) {
             return res.redirect('/signin');
         } else {
             var user = new User(_user);
