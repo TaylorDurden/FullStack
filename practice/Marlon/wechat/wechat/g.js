@@ -7,16 +7,17 @@
 var sha1 = require('sha1');
 var getRawBody = require('raw-body');
 var Wechat = require('./wechat');
+var util = require('./util');
 
-module.exports = function (opts) {
+module.exports = function (opts, handler) {
 
     var wechat = new Wechat(opts);
-
-    console.log('第一步');
 
     return function *(next) {
 
         console.log('第二步');
+
+        var that = this;
         var token = opts.token;
         var signature = this.query.signature;
         var nonce = this.query.nonce;
@@ -44,7 +45,17 @@ module.exports = function (opts) {
                 encoding: this.charset
             });
 
-            console.log(data.toString());
+            console.log('原始' + data.toString());
+            var content = yield  util.parseXMLAsync(data);
+            console.log(content);
+            var message = util.formatMessage(content.xml);
+            console.log(message);
+
+            this.weixin = message;
+
+            yield handler.call(this, next);
+
+            wechat.reply.call(this);
         }
     }
 };
