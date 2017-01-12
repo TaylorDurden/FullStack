@@ -80,8 +80,120 @@ exports.reply = function *(next) {
                 musicUrl: 'http://mpge.5nd.com/2015/2015-9-12/66325/1.mp3',
                 thumbMediaId: data.media_id
             }
-        }
+        } else if (content === '8') {
+            var data = yield wechatApi.uploadMaterial('image', __dirname + '/saber.jpg', {type: 'image'});
 
+            replay = {
+                type:'image',
+                mediaId: data.media_id
+            }
+        } else if (content === '9') {
+            var data = yield wechatApi.uploadMaterial('video', __dirname + '/xx.mp4', {type: 'video', description: "{'title': 'I dont know', 'introduction': 'Never give up!'}"});
+
+            console.log(data);
+
+            replay = {
+                type:'video',
+                title: '小视频',
+                description: '我不知道是什么',
+                mediaId: data.media_id
+            }
+        } else if (content === '10') {
+            var picData =  yield wechatApi.uploadMaterial('image', __dirname + '/saber.jpg', {});
+
+            var media = {
+                articles: [{
+                    title: '图',
+                    thumb_media_id: picData.media_id,
+                    author: 'Marlon',
+                    digest: '这是摘要',
+                    show_cover_pic: 1,
+                    content: '这是内容',
+                    content_source_url: 'https://github.com'
+                }]
+            };
+
+            data = yield wechatApi.uploadMaterial('news', media, {});
+            console.log(data.mediaId);
+            data = yield wechatApi.fetchMaterial(data.media_id, 'news', {});
+
+            console.log(data);
+
+            var items = data.news_item;
+            var news = [];
+
+            items.forEach(function (item) {
+                news.push({
+                    title: item.rirle,
+                    decription: item.digest,
+                    picUrl: picData.url,
+                    url: item.url
+                })
+            });
+            replay = news;
+        } else if (content === '11') {
+            var counts = yield wechatApi.countMaterial();
+            console.log(JSON.stringify(counts));
+
+            var result = yield [
+                wechatApi.batchMaterial({
+                    type: 'image',
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchMaterial({
+                    type: 'video',
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchMaterial({
+                    type: 'voice',
+                    offset: 0,
+                    count: 10
+                }),
+                wechatApi.batchMaterial({
+                    type: 'news',
+                    offset: 0,
+                    count: 10
+                })
+            ];
+
+            console.log(JSON.stringify(result));
+            replay = '1';
+        } else if (content === '12') {
+            var group = yield wechatApi.checkGroup('wechat');
+
+            console.log('新分组 wechat');
+            console.log(group);
+
+            var groups = yield  wechatApi.fetchGroup();
+            console.log('加了 wechat 的分组列表');
+            console.log(groups);
+
+            var group2 = yield wechatApi.checkGroup(message.FromUserName);
+            console.log('查看自己的分组');
+            console.log(group2);
+
+            replay = 'group done';
+        } else if (content === '13') {
+            var user = yield  wechatApi.batchFetchUsers(message.FromUserName, 'en');
+            console.log(user);
+
+            var openIds = [
+                {
+                    openid: message.FromUserName,
+                    lang: 'en'
+                }
+            ];
+            var users = yield wechatApi.batchFetchUsers(openIds);
+            console.log(users);
+
+            replay = JSON.stringify(user);
+        } else if (content === '14') {
+            var userList = yield wechatApi.listUsers();
+            console.log(userList);
+            replay = userList.total;
+        }
         this.body = replay;
     }
     yield next;
