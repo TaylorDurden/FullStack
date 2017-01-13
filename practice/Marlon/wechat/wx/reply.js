@@ -3,9 +3,18 @@
  */
 'use strict';
 
-var config = require('./config');
-var Wechat = require('./wechat/wechat');
+var path = require('path');
+var config = require('../config');
+var Wechat = require('../wechat/wechat');
+var menu = require('./menu');
 var wechatApi = new Wechat(config.wechat);
+
+wechatApi.deleteMenu().then(function () {
+    return wechatApi.createMenu(menu)
+})
+.then(function (msg) {
+    console.log(msg)
+});
 
 exports.reply = function *(next) {
     var message = this.weixin;
@@ -16,7 +25,6 @@ exports.reply = function *(next) {
             if (message.EventKey) {
                 console.log('扫二维码进来' + message.EventKey + '' + message.ticket)
             }
-
             this.body = '哈哈, 你订阅了这个号';
         } else if (message.Event === 'unsubscribe') {
             console.log('无情！');
@@ -30,7 +38,34 @@ exports.reply = function *(next) {
 
             this.body = '看到扫一扫';
         } else if (message.Event === 'VIEW') {
-            this.body = '您点击了菜单中的链接：' + message.EventKey;
+            this.body = '您点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'scancode_push') {
+            console.log(message.ScanCodeInfo.ScanType);
+            console.log(message.ScanCodeInfo.ScanResult);
+            this.body = '您点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'scancode_waitmsg') {
+            console.log(message.ScanCodeInfo.ScanType);
+            console.log(message.ScanCodeInfo.ScanResult)
+            this.body = '您点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'pic_sysphoto') {
+            console.log(message.SendPicsInfo.PicList);
+            console.log(message.SendPicsInfo.Count);
+            this.body = '您点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'pic_photo_or_album') {
+            console.log(message.SendPicsInfo.PicList);
+            console.log(message.SendPicsInfo.Count);
+            this.body = '您点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'pic_weixin') {
+            console.log(message.SendPicsInfo.PicList);
+            console.log(message.SendPicsInfo.Count);
+            this.body = '您点击了菜单中：' + message.EventKey;
+        } else if (message.Event === 'location_selet') {
+            console.log(message.SendLocationInfo.Location_X);
+            console.log(message.SendLocationInfo.Location_Y);
+            console.log(message.SendLocationInfo.Scale);
+            console.log(message.SendLocationInfo.Label);
+            console.log(message.SendLocationInfo.Poiname);
+            this.body = '您点击了菜单中：' + message.EventKey;
         }
     } else if (message.MsgType === 'text') {
         var content = message.Content;
@@ -55,7 +90,7 @@ exports.reply = function *(next) {
                 url: 'https://nodejs.org'
             }]
         } else if (content === '5') {
-            var data = yield wechatApi.uploadMaterial('image', __dirname + '/saber.jpg');
+            var data = yield wechatApi.uploadMaterial('image', path.join(__dirname, '../saber.jpg', {}));
 
             replay = {
                 type:'image',
@@ -71,7 +106,7 @@ exports.reply = function *(next) {
                 mediaId: data.media_id
             }
         } else if (content === '7') {
-            var data = yield wechatApi.uploadMaterial('image', __dirname + '/saber.jpg');
+            var data = yield wechatApi.uploadMaterial('image', path.join(__dirname, '../saber.jpg', {}));
 
             replay = {
                 type:'music',
@@ -81,7 +116,7 @@ exports.reply = function *(next) {
                 thumbMediaId: data.media_id
             }
         } else if (content === '8') {
-            var data = yield wechatApi.uploadMaterial('image', __dirname + '/saber.jpg', {type: 'image'});
+            var data = yield wechatApi.uploadMaterial('image', path.join(__dirname, '../saber.jpg', {}), {type: 'image'});
 
             replay = {
                 type:'image',
@@ -99,7 +134,7 @@ exports.reply = function *(next) {
                 mediaId: data.media_id
             }
         } else if (content === '10') {
-            var picData =  yield wechatApi.uploadMaterial('image', __dirname + '/saber.jpg', {});
+            var picData =  yield wechatApi.uploadMaterial('image', __dirname + '../saber.jpg', {});
 
             var media = {
                 articles: [{
@@ -193,6 +228,73 @@ exports.reply = function *(next) {
             var userList = yield wechatApi.listUsers();
             console.log(userList);
             replay = userList.total;
+        } else if (content === '15') {
+            var text = {
+                "content":"你好啊"
+            };
+            var msgData = yield  wechatApi.sendByGroup('text', text, 0);
+            replay = '发送';
+        } else if (content === '16') {
+            var text1 = {
+                'content': '你好啊~~~'
+            };
+            var msgData1 = yield wechatApi.previewMass('text', text1, 'oO2bpv-A7Q6kmvm9TsePHwV_n9pw');
+            console.log(msgData);
+            replay = '预览';
+        } else if (content === '17') {
+            var msgData2 = yield wechatApi.checkMass('6374683404233803607');
+            console.log(msgData2);
+            replay = 'yoho';
+        } else if (content === '18') {
+            // 临时创建二维码
+            var tempQr = {
+                expire_seconds: 400000,
+                action_name: 'QR_SCENE',
+                action_info: {
+                    scene: {
+                        scene_id: 123
+                    }
+                }
+            };
+
+            // 永久创建二维码
+            var permQr = {
+                action_name: 'QR_LIMIT_SCEME',
+                action_info: {
+                    scene: {
+                        scene_id: 123
+                    }
+                }
+            };
+            var permStrQr = {
+                action_name: 'QR_LIMIT_STR_SCENE',
+                action_info: {
+                    scene: {
+                        scene_str: abc
+                    }
+                }
+            };
+            var qr1 = yield wechatApi.createQrcode(tempQr);
+            var qr2 = yield wechatApi.createQrcode(permQr);
+            var qr3 = yield wechatApi.createQrcode(permStrQr);
+
+            console.log(qr1 + qr2 + qr3);
+            replay = '二维码';
+        } else if (content === '19') {
+            var longUrl = 'http://www.imooc.com/';
+
+            var shrotData = yield wechatApi.createShorturl(null, longUrl);
+            replay = shrotData.short_url
+        } else if (content === '20') { // 微信语义回复策略
+            var semanticData = {
+                query: '寻龙诀',
+                city: '西安',
+                category: 'movie',
+                uid: message.FromUserName
+            };
+
+            var _semanticData = yield wechatApi.semantic(semanticData);
+            replay = JSON.stringify(_semanticData);
         }
         this.body = replay;
     }
